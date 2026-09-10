@@ -1,8 +1,7 @@
-# Render blueprint — deploys Daily Life Review with a persistent disk so the
-# SQLite database survives restarts and redeploys.
+# Render blueprint — self-hosted option that needs NO external database.
+# A persistent disk keeps the local SQLite file across restarts/redeploys.
 #
-# Usage: push this repo to GitHub, then in Render choose
-#   New + > Blueprint > select the repo.
+# Render dashboard: New + > Blueprint > pick this repo.
 services:
   - type: web
     name: daily-life-review

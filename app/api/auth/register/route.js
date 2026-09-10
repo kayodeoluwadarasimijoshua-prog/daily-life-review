@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
-import db from "@/lib/db";
 import { hashPassword, createSession } from "@/lib/auth";
 import { setSessionCookie, publicUser } from "@/lib/session";
 import { ensureSeeded } from "@/lib/seed";
+import { findUserByEmail, createUser, ensureSchema } from "@/lib/store";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(req) {
   try {
-    ensureSeeded();
+    await ensureSchema();
+    await ensureSeeded();
     const body = await req.json();
     const name = String(body.name || "").trim();
     const email = String(body.email || "").trim().toLowerCase();
@@ -25,7 +28,7 @@ export async function POST(req) {
       );
     }
 
-    const taken = db.prepare("SELECT id FROM users WHERE email = ?").get(email);
+    const taken = await findUserByEmail(email);
     if (taken) {
       return NextResponse.json(
         { error: "An account with that email already exists. Try logging in." },
@@ -33,16 +36,9 @@ export async function POST(req) {
       );
     }
 
-    const info = db
-      .prepare("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)")
-      .run(name, email, hashPassword(password));
-
-    const token = createSession(info.lastInsertRowid);
+    const user = await createUser({ name, email, passwordHash: hashPassword(password) });
+    const token = await createSession(user.id);
     setSessionCookie(token);
-
-    const user = db
-      .prepare("SELECT id, name, email, created_at AS createdAt FROM users WHERE id = ?")
-      .get(info.lastInsertRowid);
 
     return NextResponse.json({ user: publicUser(user) }, { status: 201 });
   } catch (err) {

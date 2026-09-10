@@ -2,7 +2,7 @@
 FROM node:20-slim AS base
 WORKDIR /app
 
-# better-sqlite3 needs build tooling if no prebuilt binary matches.
+# Build tooling in case a native prebuilt binary isn't available for this arch.
 RUN apt-get update && apt-get install -y --no-install-recommends \
       python3 make g++ ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -19,7 +19,7 @@ RUN npm run build
 # --- run ---
 ENV NODE_ENV=production
 ENV PORT=3000
-# Persist the SQLite DB on a mounted volume (see DATA_DIR).
+# Optional: persist the local SQLite DB on a mounted volume.
 ENV DATA_DIR=/var/data
 RUN mkdir -p /var/data
 

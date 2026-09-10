@@ -6,8 +6,8 @@ import { ensureSeeded } from "@/lib/seed";
 export const dynamic = "force-dynamic";
 
 export const GET = withAuth(async function GET() {
-  const user = requireUser();
-  ensureSeeded();
-  const reports = listReports(user.id);
+  await ensureSeeded();
+  const user = await requireUser();
+  const reports = await listReports(user.id);
   return NextResponse.json({ reports });
 });

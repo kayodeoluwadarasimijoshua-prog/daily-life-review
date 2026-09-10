@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { activeProvider, providerStatus } from "@/lib/ai/index";
+import { dbUrlLabel } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-// Public-ish (no secrets): reports which AI engine is active.
+// No secrets: reports which AI engine + database backend are active.
 export async function GET() {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
   return NextResponse.json({
     provider: activeProvider,
     providerStatus,
+    database: dbUrlLabel,
     authenticated: !!user,
     version: "1.0.0",
   });
