@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+data/*.db
+data/*.db-*
+.env*.local
+npm-debug.log*
+.DS_Store
+
+# runtime data (sqlite) — regenerated & seeded on start
+data/

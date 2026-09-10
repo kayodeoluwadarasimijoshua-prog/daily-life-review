@@ -1,0 +1,9 @@
+{
+  "name": "Daily Life Review",
+  "short_name": "Life Review",
+  "description": "Turn daily journal notes into weekly insights with AI.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f6fb",
+  "theme_color": "#6c5ce7"
+}

@@ -1,0 +1,24 @@
+# Render blueprint — deploys Daily Life Review with a persistent disk so the
+# SQLite database survives restarts and redeploys.
+#
+# Usage: push this repo to GitHub, then in Render choose
+#   New + > Blueprint > select the repo.
+services:
+  - type: web
+    name: daily-life-review
+    runtime: node
+    plan: starter            # persistent disks require a paid instance type
+    buildCommand: npm install --no-audit --no-fund && npm run build
+    startCommand: npm start -- -p $PORT
+    healthCheckPath: /login
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: DATA_DIR
+        value: /var/data
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+    disk:
+      name: app-data
+      mountPath: /var/data
+      sizeGB: 1
