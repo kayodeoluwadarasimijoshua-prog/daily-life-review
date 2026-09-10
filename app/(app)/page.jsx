@@ -106,8 +106,8 @@ export default function HomePage() {
         </Link>
       </div>
 
-      {/* stat tiles */}
-      <div className="grid grid-4 mb24">
+      {/* stat tiles — 2x2 on mobile, 4-col on desktop */}
+      <div className="grid mb24" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
         {stats.map((s) => (
           <div className="stat" key={s.lb}>
             <div className="lb">{s.lb}</div>
@@ -118,7 +118,7 @@ export default function HomePage() {
       </div>
 
       {/* this week + report CTA */}
-      <div className="grid-2 mb24" style={{ display: "grid", gap: 16 }}>
+      <div className="mb24" style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))" }}>
         <div className="card card-pad">
           <div className="flex between mb16">
             <h3 className="card-title flex gap8"><IconCalendar size={17} style={{ color: "var(--brand)" }} /> This week</h3>

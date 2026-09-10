@@ -70,7 +70,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="grid-2" style={{ display: "grid", gap: 16 }}>
+      <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))" }}>
         {/* Profile */}
         <div className="card card-pad">
           <h3 className="card-title mb16">Profile</h3>
@@ -112,7 +112,7 @@ export default function SettingsPage() {
         <div className="card card-pad">
           <h3 className="card-title flex gap8 mb16"><IconJournal size={18} style={{ color: "var(--brand)" }} /> Your data</h3>
           <p className="card-sub">All of it lives privately on this device in a local database.</p>
-          <div className="grid grid-3 mt16">
+          <div className="grid mt16" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(90px, 1fr))", gap: 10 }}>
             <div className="stat"><div className="lb">Entries</div><div className="vl">{entries.length}</div></div>
             <div className="stat"><div className="lb">Journal days</div><div className="vl">{days}</div></div>
             <div className="stat"><div className="lb">Reviews</div><div className="vl">{reports.length}</div></div>

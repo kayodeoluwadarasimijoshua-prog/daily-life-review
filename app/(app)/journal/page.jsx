@@ -100,8 +100,8 @@ export default function JournalPage() {
       </div>
 
       {/* toolbar */}
-      <div className="flex between mb16" style={{ alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-        <div className="searchbox" style={{ width: "min(100%, 320px)" }}>
+      <div className="mb16" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div className="searchbox" style={{ width: "100%", maxWidth: 400 }}>
           <IconSearch size={16} />
           <input
             className="input"
@@ -110,7 +110,7 @@ export default function JournalPage() {
             placeholder="Search entries…"
           />
         </div>
-        <div className="flex gap6" style={{ flexWrap: "wrap", alignItems: "center" }}>
+        <div className="flex" style={{ flexWrap: "wrap", alignItems: "center", gap: 6 }}>
           <span className="muted" style={{ fontSize: 12.5, fontWeight: 600, marginRight: 2 }}>Mood:</span>
           <button
             className={`chip ${moodFilter === null ? "tag" : ""}`}
@@ -125,10 +125,10 @@ export default function JournalPage() {
                 cursor: "pointer",
                 border: moodFilter === m.value ? "1px solid var(--brand)" : "1px solid var(--line)",
                 background: moodFilter === m.value ? "var(--brand-soft)" : "var(--surface)",
-                borderRadius: 999, padding: "4px 9px",
+                borderRadius: 999, padding: "6px 10px",
               }}
             >
-              <span style={{ fontSize: 14 }}>{m.emoji}</span>
+              <span style={{ fontSize: 15 }}>{m.emoji}</span>
             </button>
           ))}
         </div>
@@ -157,28 +157,28 @@ export default function JournalPage() {
             <div className="card entry" key={e.id}>
               {moodDot(e.mood, 11)}
               <div className="grow" style={{ minWidth: 0 }}>
-                <div className="flex between gap12" style={{ alignItems: "flex-start" }}>
-                  <div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <div className="flex between gap12" style={{ alignItems: "flex-start" }}>
                     <h4 style={{ display: "inline", fontSize: 15, cursor: "pointer" }} onClick={() => setViewing(e)}>{e.title}</h4>
-                  </div>
-                  <div className="flex gap6" style={{ flexShrink: 0 }}>
-                    <span style={{ fontSize: 12, color: "var(--ink-3)", fontWeight: 600, whiteSpace: "nowrap" }}>
-                      {e.date}
-                    </span>
-                    {e.mood && <MoodChip value={e.mood} />}
+                    <div className="flex gap6" style={{ flexShrink: 0 }}>
+                      <span style={{ fontSize: 12, color: "var(--ink-3)", fontWeight: 600, whiteSpace: "nowrap" }}>
+                        {e.date}
+                      </span>
+                      {e.mood && <MoodChip value={e.mood} />}
+                    </div>
                   </div>
                 </div>
                 <p
                   onClick={() => setViewing(e)}
-                  style={{ color: "var(--ink-2)", fontSize: 13.5, marginTop: 6, lineHeight: 1.5, cursor: "pointer" }}
+                  style={{ color: "var(--ink-2)", fontSize: 13.5, marginTop: 6, lineHeight: 1.55, cursor: "pointer" }}
                 >
                   {e.body}
                 </p>
-                <div className="flex gap8 mt8" style={{ gap: 6 }}>
-                  <button className="chip" style={{ background: "var(--surface-2)", cursor: "pointer", color: "var(--ink-2)" }} onClick={() => openEdit(e)}>
+                <div className="flex mt8" style={{ gap: 6 }}>
+                  <button className="chip" style={{ background: "var(--surface-2)", cursor: "pointer", color: "var(--ink-2)", padding: "5px 11px" }} onClick={() => openEdit(e)}>
                     <IconEdit size={13} /> Edit
                   </button>
-                  <button className="chip" style={{ background: "var(--surface-2)", cursor: "pointer", color: "var(--bad)" }} onClick={() => setDeleting(e)}>
+                  <button className="chip" style={{ background: "var(--surface-2)", cursor: "pointer", color: "var(--bad)", padding: "5px 11px" }} onClick={() => setDeleting(e)}>
                     <IconTrash size={13} /> Delete
                   </button>
                 </div>
@@ -209,7 +209,7 @@ export default function JournalPage() {
               {viewing.mood && <MoodChip value={viewing.mood} />}
             </div>
             <p style={{ whiteSpace: "pre-wrap", lineHeight: 1.7, color: "var(--ink)", fontSize: 14.5 }}>{viewing.body}</p>
-            <div className="flex gap8 mt24" style={{ justifyContent: "flex-end" }}>
+            <div className="flex gap8 mt24" style={{ justifyContent: "flex-end", flexWrap: "wrap" }}>
               <button className="btn btn-ghost" onClick={() => { setViewing(null); openEdit(viewing); }}><IconEdit size={15} /> Edit</button>
               <button className="btn btn-primary" onClick={() => setViewing(null)}>Close</button>
             </div>

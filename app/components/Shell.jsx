@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ToastProvider, useToast } from "./toast";
@@ -53,7 +53,7 @@ function SidebarContent({ pathname, onNavigate, user, onLogout, loggingOut }) {
           </div>
           <button
             className="icon-btn"
-            style={{ width: 36, height: 36, border: "none", background: "transparent" }}
+            style={{ width: 38, height: 38, border: "none", background: "transparent" }}
             onClick={onLogout}
             disabled={loggingOut}
             title="Log out"
@@ -71,6 +71,21 @@ export function Shell({ user, children }) {
   const [loggingOut, setLoggingOut] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  // Lock body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (open) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+    return () => document.body.classList.remove("modal-open");
+  }, [open]);
+
+  // Close sidebar on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const logout = async () => {
     setLoggingOut(true);
@@ -90,19 +105,34 @@ export function Shell({ user, children }) {
       <div className="app-shell">
         {/* topbar mobile */}
         <div className="topbar">
-          <button className="icon-btn" onClick={() => setOpen(true)} aria-label="Open menu">
+          <button
+            className="icon-btn"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={open}
+          >
             <IconMenu size={20} />
           </button>
           <Logo small />
           <div style={{ marginLeft: "auto" }}>
-            <span className="logo-mark sm" style={{ width: 34, height: 34, background: "var(--surface-3)", color: "var(--brand)" }}>
+            <span
+              className="logo-mark sm"
+              style={{
+                width: 34, height: 34,
+                background: "var(--surface-3)", color: "var(--brand)",
+              }}
+            >
               <FeatherMark size={18} />
             </span>
           </div>
         </div>
 
-        <div className={`sidebar-mask ${open ? "show" : ""}`} onClick={close} />
-        <aside className={`sidebar ${open ? "open" : ""}`}>
+        <div
+          className={`sidebar-mask ${open ? "show" : ""}`}
+          onClick={close}
+          aria-hidden={!open}
+        />
+        <aside className={`sidebar ${open ? "open" : ""}`} aria-label="Navigation">
           <SidebarContent
             pathname={pathname}
             onNavigate={close}

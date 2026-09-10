@@ -59,12 +59,12 @@ function MoodTrendChart({ trend }) {
         <div className="moodbar">
           {days.map((d, i) => {
             const filled = d.score != null && d.score !== undefined;
-            const pct = filled ? Math.max(8, (d.score / 5) * 100) : 0;
+            const pct = filled ? Math.max(12, (d.score / 5) * 100) : 0;
             const color = filled ? scoreColor(d.score) : "#edeff6";
             const m = MOOD_BY_VALUE[d.mood];
             return (
               <div className="col" key={d.date}>
-                <span style={{ fontSize: 16 }}>{filled && m ? m.emoji : ""}</span>
+                <span style={{ fontSize: 18 }}>{filled && m ? m.emoji : ""}</span>
                 <div className="bar" style={{ height: pct + "%", background: color }} title={m ? m.label : ""} />
                 <span className="lbl">{DAY_LABELS[i]}</span>
               </div>
@@ -164,11 +164,11 @@ export function ReportDetail({ report }) {
   const t = p.moodTrend || {};
   return (
     <div className="grid" style={{ gap: 16 }}>
-      <div className="grid-2">
+      <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))" }}>
         <div className="card card-pad"><MoodTrendChart trend={t} /></div>
         <div className="card card-pad"><Themes themes={p.themes} /></div>
       </div>
-      <div className="grid-2">
+      <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))" }}>
         {(p.wins && p.wins.length > 0) && (
           <div className="card card-pad"><DotList items={p.wins} kind="win" /></div>
         )}

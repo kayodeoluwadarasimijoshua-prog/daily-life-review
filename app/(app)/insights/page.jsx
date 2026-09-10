@@ -114,13 +114,11 @@ export default function InsightsPage() {
         </div>
 
         <div className="report-hero mb24">
-          <div className="flex between gap16" style={{ position: "relative", zIndex: 1, flexWrap: "wrap" }}>
-            <div style={{ maxWidth: "80%" }}>
-              <h2 className="flex gap8" style={{ alignItems: "center" }}>
-                <IconBrain size={20} /> Your week in a nutshell
-              </h2>
-              <p style={{ marginTop: 12, lineHeight: 1.65, fontSize: 15, opacity: 0.97 }}>{selP.summary || selected.summary}</p>
-            </div>
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <h2 className="flex gap8" style={{ alignItems: "center" }}>
+              <IconBrain size={20} /> Your week in a nutshell
+            </h2>
+            <p style={{ marginTop: 12, lineHeight: 1.65, fontSize: 15, opacity: 0.97 }}>{selP.summary || selected.summary}</p>
           </div>
           <div className="badge-row">
             {selMood && <span className="badge-soft">Average mood · {selP.moodTrend?.dominant}</span>}
@@ -131,7 +129,7 @@ export default function InsightsPage() {
 
         <ReportDetail report={selected} />
 
-        <div className="flex gap8 mt24">
+        <div className="flex gap8 mt24" style={{ flexWrap: "wrap" }}>
           <button className="btn btn-ghost" onClick={() => setSelected(null)}>← All reviews</button>
           <button className="btn btn-soft" onClick={generate} disabled={generating}>
             {generating ? <Spinner size={16} /> : <IconRefresh size={16} />} Regenerate this week
@@ -153,16 +151,16 @@ export default function InsightsPage() {
 
       {/* generate panel for current week */}
       <div className="card card-pad mb24" style={{ borderColor: currentWeekReport ? "var(--line)" : "#e4defd", background: "linear-gradient(120deg,#fbfaff,#f5f3ff)" }}>
-        <div className="flex between gap16" style={{ alignItems: "flex-start", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
             <h3 className="card-title flex gap8"><IconSparkle size={18} style={{ color: "var(--brand)" }} /> {formatWeekRange(ws)}</h3>
-            <p className="muted mt8" style={{ fontSize: 13.5, lineHeight: 1.5, maxWidth: "62ch" }}>
+            <p className="muted mt8" style={{ fontSize: 13.5, lineHeight: 1.5 }}>
               {currentWeekReport
                 ? "You already have a review for the current week. Regenerate any time — it'll refresh with your latest notes."
                 : "Generate a review from this week's notes. You'll get mood trends, recurring themes, wins, and suggestions for next week."}
             </p>
           </div>
-          <button className="btn btn-primary" onClick={generate} disabled={generating}>
+          <button className="btn btn-primary" onClick={generate} disabled={generating} style={{ alignSelf: "flex-start" }}>
             {generating ? <Spinner size={16} /> : currentWeekReport ? <IconRefresh size={17} /> : <IconSparkle size={17} />}
             {generating ? GEN_MSGS[genMsgIdx] : currentWeekReport ? "Regenerate" : "Generate my review"}
           </button>

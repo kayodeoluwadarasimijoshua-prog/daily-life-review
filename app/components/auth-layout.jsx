@@ -14,7 +14,7 @@ export function AuthVisual() {
       </div>
       <div>
         <p className="quote">
-          “Write a few honest lines a day. The little patterns your mind is too busy to notice become clarity about how you're really doing.”
+          "Write a few honest lines a day. The little patterns your mind is too busy to notice become clarity about how you're really doing."
         </p>
         <small style={{ display: "block", fontWeight: 500, opacity: 0.85, fontSize: 13, marginTop: 16, position: "relative", zIndex: 1 }}>
           — your future self, looking back with kindness
@@ -41,12 +41,26 @@ export function AuthVisual() {
 
 export function DemoPill({ email, password, onFill }) {
   return (
-    <div className="demo-pill" onClick={onFill} role="button" style={{ cursor: "pointer" }}>
+    <div
+      className="demo-pill"
+      onClick={onFill}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onFill(); }}
+      style={{ cursor: "pointer" }}
+    >
       <span>✨</span>
       <span style={{ fontSize: 13 }}>
-        <strong>Try the demo:</strong> <span style={{ fontFamily: "monospace" }}>{email}</span>
+        <strong>Try the demo:</strong>{" "}
+        <span style={{ fontFamily: "monospace", wordBreak: "break-all" }}>{email}</span>
       </span>
-      <span style={{ border: "1px solid rgba(255,255,255,0.4)", borderRadius: 6, padding: "1px 7px", fontFamily: "monospace" }}>{password}</span>
+      <span style={{
+        border: "1px solid rgba(255,255,255,0.4)",
+        borderRadius: 6,
+        padding: "1px 7px",
+        fontFamily: "monospace",
+        whiteSpace: "nowrap",
+      }}>{password}</span>
       <span style={{ fontSize: 11, opacity: 0.85 }}>— tap to fill</span>
     </div>
   );

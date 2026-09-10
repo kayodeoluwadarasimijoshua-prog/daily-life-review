@@ -9,3 +9,5 @@ npm-debug.log*
 
 # runtime data (sqlite) — regenerated & seeded on start
 data/
+.vercel
+.env*
