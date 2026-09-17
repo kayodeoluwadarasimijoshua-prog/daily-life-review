@@ -314,7 +314,12 @@ p { margin: 0; }
 .x-btn:active { transform: scale(0.92); }
 
 /* ============ auth pages ============ */
-.auth-wrap { min-height:100vh; min-height:100dvh; display:flex; align-items:stretch; }
+.auth-wrap {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: stretch;
+}
 .auth-visual {
   flex: 1.05; background: var(--grad); color:#fff; padding: 60px 56px;
   position:relative; overflow:hidden;
@@ -331,14 +336,49 @@ p { margin: 0; }
 .quote small { display:block; font-weight:500; opacity:.85; font-size:14px; margin-top:16px;}
 .demo-pill {
   position:relative; z-index:1; display:inline-flex; align-items:center; gap:8px;
-  margin-top:26px; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.25);
   padding:8px 14px; border-radius:12px; font-size:13px;
   backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
+/* When demo-pill is inside the auth form card (not the visual panel) */
+.card-pad .demo-pill,
+.auth-card .demo-pill {
+  background: var(--surface-2); border-color: var(--line);
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  color: var(--ink-2); margin-top: 0;
+  width: 100%; cursor: pointer;
+}
+.card-pad .demo-pill:hover,
+.auth-card .demo-pill:hover {
+  background: var(--surface-3); border-color: var(--ink-4);
 }
 .auth-brand { display:inline-flex; align-items:center; gap:10px; font-size:16px; font-weight:700; margin-bottom:4px;}
 
 .logo-mark { width:38px;height:38px; border-radius:12px; display:grid; place-items:center; background:var(--grad); color:#fff; box-shadow: var(--shadow-sm); flex:0 0 auto; }
 .logo-mark.sm { width:32px;height:32px;border-radius:10px; }
+
+/* Google sign-in button */
+.google-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 11px 20px; border-radius: 11px;
+  background: var(--surface); color: var(--ink); font-weight: 600; font-size: 14px;
+  border: 1px solid var(--line); cursor: pointer;
+  transition: background .15s, border-color .15s, box-shadow .15s;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+}
+.google-btn:hover { background: var(--surface-2); border-color: var(--ink-4); box-shadow: var(--shadow-sm); }
+.google-btn:active { transform: scale(0.98); }
+.google-btn svg { flex: 0 0 auto; }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 18px 0 8px; color: var(--ink-4); font-size: 12px; font-weight: 600;
+}
+.divider::before, .divider::after {
+  content: ""; flex: 1; height: 1px; background: var(--line);
+}
 
 /* ============ insights / report ============ */
 .report-hero {

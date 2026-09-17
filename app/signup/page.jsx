@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthVisual } from "../components/auth-layout";
 import { Spinner, FullScreen } from "../components/ui";
 import Logo from "../components/Logo";
-import { IconArrowR } from "../components/icons";
+import { IconArrowR, IconGoogle } from "../components/icons";
 import { api } from "../lib/client";
 
 export default function SignupPage() {
@@ -54,7 +54,17 @@ export default function SignupPage() {
             <h2 className="auth-title">Create your journal</h2>
             <p className="auth-sub">Start turning ordinary days into a clearer picture of your life.</p>
 
-            <form onSubmit={submit} className="mt24">
+            {/* Google sign-up button */}
+            <a href="/api/auth/sign-in-google" className="google-btn mt24">
+              <IconGoogle size={20} />
+              <span>Continue with Google</span>
+            </a>
+
+            <div className="divider">
+              <span>or</span>
+            </div>
+
+            <form onSubmit={submit} className="mt16">
               <div className="field">
                 <label>Your name</label>
                 <input className="input" value={name} onChange={(e) => { setName(e.target.value); setError(null); }} placeholder="e.g. Amara" required minLength={2} />

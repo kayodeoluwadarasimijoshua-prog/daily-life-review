@@ -5,8 +5,13 @@ import { useRouter } from "next/navigation";
 import { AuthVisual, DemoPill } from "../components/auth-layout";
 import { Spinner, FullScreen } from "../components/ui";
 import Logo from "../components/Logo";
-import { IconArrowR, IconSparkle } from "../components/icons";
+import { IconArrowR, IconGoogle } from "../components/icons";
 import { api } from "../lib/client";
+
+const SUPABASE_CONFIGURED =
+  typeof window !== "undefined" &&
+  process.env.NEXT_PUBLIC_SUPABASE_URL &&
+  process.env.NEXT_PUBLIC_SUPABASE_URL !== "https://placeholder.supabase.co";
 
 export default function LoginPage() {
   const [checking, setChecking] = useState(true);
@@ -54,11 +59,21 @@ export default function LoginPage() {
           <Logo />
           <div className="card card-pad mt16">
             <h2 className="auth-title">Welcome back</h2>
-            <p className="auth-sub">Log in to revisit your notes and this week's insights.</p>
+            <p className="auth-sub">Log in to revisit your notes and this week&apos;s insights.</p>
+
+            {/* Google sign-in button */}
+            <a href="/api/auth/sign-in-google" className="google-btn mt24">
+              <IconGoogle size={20} />
+              <span>Continue with Google</span>
+            </a>
+
+            <div className="divider">
+              <span>or</span>
+            </div>
 
             <DemoPill email="demo@dailyreview.app" password="demo1234" onFill={fillDemo} />
 
-            <form onSubmit={submit} className="mt24">
+            <form onSubmit={submit} className="mt16">
               <div className="field">
                 <label>Email</label>
                 <input
