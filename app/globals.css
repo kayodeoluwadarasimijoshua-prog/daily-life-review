@@ -383,16 +383,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .auth-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
 .quote { max-width: 46ch; font-size: 21px; line-height: 1.45; font-weight: 600; letter-spacing: -0.01em; position: relative; z-index: 1; }
 .quote small { display: block; font-weight: 500; opacity: 0.85; font-size: 14px; margin-top: 16px; }
-.demo-pill {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  background: var(--surface-2); border: 1px solid var(--line);
-  padding: 10px 14px; border-radius: 11px; font-size: 13px;
-  cursor: pointer; width: 100%;
-  transition: all var(--transition);
-  -webkit-tap-highlight-color: transparent;
-}
-.demo-pill:hover { background: var(--surface-3); border-color: var(--ink-4); }
-.demo-pill:active { transform: scale(0.99); }
 
 /* Google sign-in button */
 .google-btn {

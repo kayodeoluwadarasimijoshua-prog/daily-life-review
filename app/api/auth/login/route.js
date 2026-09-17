@@ -22,8 +22,8 @@ export async function POST(req) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        // If Supabase doesn't have the user, fall through to local check below
-        // (supports the demo account which may only exist in Turso)
+        // Supabase doesn't have the user — try local password fallback
+        // (supports legacy users who signed up before Supabase was added)
         const localUser = await findUserByEmail(email);
         if (!localUser || !localUser.password_hash || !verifyPassword(password, localUser.password_hash)) {
           return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });

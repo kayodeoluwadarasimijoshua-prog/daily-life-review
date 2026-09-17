@@ -38,12 +38,6 @@ export default function LoginPage() {
     }
   };
 
-  const fillDemo = () => {
-    setEmail("demo@dailyreview.app");
-    setPassword("demo1234");
-    setError(null);
-  };
-
   if (checking) return <FullScreen label="Loading…" />;
 
   return (
@@ -63,22 +57,7 @@ export default function LoginPage() {
 
             <div className="divider"><span>or</span></div>
 
-            <div className="demo-pill" onClick={fillDemo} role="button" tabIndex={0}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fillDemo(); }}>
-              <span style={{ fontSize: 15 }}>✨</span>
-              <span style={{ fontSize: 13 }}>
-                <strong>Try the demo:</strong>{" "}
-                <span style={{ fontFamily: "monospace" }}>demo@dailyreview.app</span>
-              </span>
-              <span style={{
-                marginLeft: "auto",
-                border: "1px solid var(--line)", borderRadius: 6,
-                padding: "2px 8px", fontFamily: "monospace", fontSize: 12,
-                background: "var(--surface)", whiteSpace: "nowrap",
-              }}>demo1234</span>
-            </div>
-
-            <form onSubmit={submit} className="mt16">
+            <form onSubmit={submit}>
               <div className="field">
                 <label>Email</label>
                 <input
