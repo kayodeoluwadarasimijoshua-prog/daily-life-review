@@ -106,8 +106,8 @@ export default function HomePage() {
         </Link>
       </div>
 
-      {/* stat tiles — 2x2 on mobile, 4-col on desktop */}
-      <div className="grid mb24" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
+      {/* stat tiles — responsive auto-fit grid */}
+      <div className="grid mb24" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
         {stats.map((s) => (
           <div className="stat" key={s.lb}>
             <div className="lb">{s.lb}</div>
@@ -200,14 +200,14 @@ export default function HomePage() {
         <div className="grid" style={{ gap: 10 }}>
           {entries.slice(0, 5).map((e) => (
             <Link key={e.id} href={`/journal?e=${e.id}`}>
-              <div className="card" style={{ padding: "14px 18px", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <div className="card entry" style={{ cursor: "pointer" }}>
                 {moodDot(e.mood)}
                 <div className="grow" style={{ minWidth: 0 }}>
                   <div className="flex between gap12">
                     <h4 style={{ fontSize: 15 }}>{e.title}</h4>
-                    <span className="muted" style={{ fontSize: 12, whiteSpace: "nowrap" }}>{prettyDate(e.date)}</span>
+                    <span className="muted" style={{ fontSize: 12, whiteSpace: "nowrap", flexShrink: 0 }}>{prettyDate(e.date)}</span>
                   </div>
-                  <p style={{ color: "var(--ink-2)", fontSize: 13.5, marginTop: 4, lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{e.body}</p>
+                  <p className="bd" style={{ display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{e.body}</p>
                 </div>
               </div>
             </Link>

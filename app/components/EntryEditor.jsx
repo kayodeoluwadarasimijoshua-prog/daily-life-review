@@ -47,10 +47,7 @@ export default function EntryEditor({ open, entry, onClose, onSave }) {
           <input
             className={`input ${fieldErr ? "err" : ""}`}
             value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setFieldErr(null);
-            }}
+            onChange={(e) => { setTitle(e.target.value); setFieldErr(null); }}
             placeholder="What kind of day was it?"
             autoFocus
           />
@@ -61,7 +58,7 @@ export default function EntryEditor({ open, entry, onClose, onSave }) {
           <label>Body</label>
           <textarea
             className="textarea"
-            style={{ minHeight: 170 }}
+            style={{ minHeight: 150 }}
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder={"Write freely about your day…\n\nWhat happened? How did it feel? Any small wins or worries?"}
@@ -70,13 +67,7 @@ export default function EntryEditor({ open, entry, onClose, onSave }) {
 
         <div className="field">
           <label>Date</label>
-          <input
-            type="date"
-            className="input"
-            value={date}
-            max={todayISO()}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <input type="date" className="input" value={date} max={todayISO()} onChange={(e) => setDate(e.target.value)} />
         </div>
 
         <div className="field">
@@ -84,7 +75,7 @@ export default function EntryEditor({ open, entry, onClose, onSave }) {
           <MoodPicker value={mood} onChange={setMood} />
         </div>
 
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 8 }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 12 }}>
           <button type="button" className="btn btn-ghost" onClick={onClose} disabled={saving}>
             Cancel
           </button>

@@ -1,18 +1,1 @@
-{
-  "services": {
-    "daily-life-review": {
-      "root": ".",
-      "framework": "nextjs",
-      "buildCommand": "npm install --no-audit --no-fund && npm run build"
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": {
-        "type": "service",
-        "service": "daily-life-review"
-      }
-    }
-  ]
-}
+{}

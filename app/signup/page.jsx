@@ -54,17 +54,14 @@ export default function SignupPage() {
             <h2 className="auth-title">Create your journal</h2>
             <p className="auth-sub">Start turning ordinary days into a clearer picture of your life.</p>
 
-            {/* Google sign-up button */}
             <a href="/api/auth/sign-in-google" className="google-btn mt24">
               <IconGoogle size={20} />
               <span>Continue with Google</span>
             </a>
 
-            <div className="divider">
-              <span>or</span>
-            </div>
+            <div className="divider"><span>or</span></div>
 
-            <form onSubmit={submit} className="mt16">
+            <form onSubmit={submit} className="mt8">
               <div className="field">
                 <label>Your name</label>
                 <input className="input" value={name} onChange={(e) => { setName(e.target.value); setError(null); }} placeholder="e.g. Amara" required minLength={2} />
@@ -82,6 +79,7 @@ export default function SignupPage() {
                 {busy ? <Spinner size={17} /> : "Create account"}
               </button>
             </form>
+
             <div className="flex mt16" style={{ justifyContent: "center", gap: 6, fontSize: 13.5, color: "var(--ink-3)" }}>
               <span>Already have an account?</span>
               <Link href="/login" className="flex gap6" style={{ color: "var(--brand-600)", fontWeight: 600 }}>
