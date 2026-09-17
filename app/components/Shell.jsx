@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ToastProvider, useToast } from "./toast";
+import { ToastProvider } from "./toast";
 import Logo from "./Logo";
 import { FeatherMark } from "./icons";
 import {
   IconHome, IconJournal, IconSparkle, IconSettings,
-  IconMenu, IconX, IconLogout,
+  IconMenu, IconLogout, IconPlus,
 } from "./icons";
 import { api } from "../lib/client";
 
@@ -53,7 +53,7 @@ function SidebarContent({ pathname, onNavigate, user, onLogout, loggingOut }) {
           </div>
           <button
             className="icon-btn"
-            style={{ width: 38, height: 38, border: "none", background: "transparent" }}
+            style={{ width: 36, height: 36, border: "none", background: "transparent" }}
             onClick={onLogout}
             disabled={loggingOut}
             title="Log out"
@@ -66,34 +66,52 @@ function SidebarContent({ pathname, onNavigate, user, onLogout, loggingOut }) {
   );
 }
 
+function BottomTab({ pathname }) {
+  return (
+    <nav className="bottom-tab">
+      {NAV.map((n) => {
+        const Icon = n.icon;
+        const active = pathname === n.href;
+        return (
+          <Link
+            key={n.href}
+            href={n.href}
+            className={`tab-item ${active ? "active" : ""}`}
+          >
+            <Icon size={20} />
+            <span>{n.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+// Page title map for mobile topbar
+const PAGE_TITLES = {
+  "/": "Home",
+  "/journal": "Journal",
+  "/insights": "Insights",
+  "/settings": "Settings",
+};
+
 export function Shell({ user, children }) {
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // Lock body scroll when sidebar is open on mobile
   useEffect(() => {
-    if (open) {
-      document.body.classList.add("modal-open");
-    } else {
-      document.body.classList.remove("modal-open");
-    }
+    if (open) document.body.classList.add("modal-open");
+    else document.body.classList.remove("modal-open");
     return () => document.body.classList.remove("modal-open");
   }, [open]);
 
-  // Close sidebar on route change
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  useEffect(() => { setOpen(false); }, [pathname]);
 
   const logout = async () => {
     setLoggingOut(true);
-    try {
-      await api("/api/auth/logout", { method: "POST", body: {} });
-    } catch (e) {
-      /* ignore */
-    }
+    try { await api("/api/auth/logout", { method: "POST", body: {} }); } catch (e) {}
     router.push("/login");
     router.refresh();
   };
@@ -103,49 +121,40 @@ export function Shell({ user, children }) {
   return (
     <ToastProvider>
       <div className="app-shell">
-        {/* topbar mobile */}
+        {/* ── Desktop sidebar ── */}
+        <div className={`sidebar-mask ${open ? "show" : ""}`} onClick={close} aria-hidden={!open} />
+        <aside className={`sidebar ${open ? "open" : ""}`} aria-label="Navigation">
+          <SidebarContent pathname={pathname} onNavigate={close} user={user} onLogout={logout} loggingOut={loggingOut} />
+        </aside>
+
+        {/* ── Mobile topbar ── */}
         <div className="topbar">
-          <button
-            className="icon-btn"
-            onClick={() => setOpen(true)}
-            aria-label="Open menu"
-            aria-expanded={open}
-          >
+          <button className="topbar-menu" onClick={() => setOpen(true)} aria-label="Open menu">
             <IconMenu size={20} />
           </button>
-          <Logo small />
-          <div style={{ marginLeft: "auto" }}>
-            <span
-              className="logo-mark sm"
-              style={{
-                width: 34, height: 34,
-                background: "var(--surface-3)", color: "var(--brand)",
-              }}
-            >
-              <FeatherMark size={18} />
-            </span>
+          <span className="topbar-title">{PAGE_TITLES[pathname] || ""}</span>
+          <div className="topbar-avatar">
+            {user ? user.name.trim().charAt(0).toUpperCase() : "U"}
           </div>
         </div>
 
-        <div
-          className={`sidebar-mask ${open ? "show" : ""}`}
-          onClick={close}
-          aria-hidden={!open}
-        />
-        <aside className={`sidebar ${open ? "open" : ""}`} aria-label="Navigation">
-          <SidebarContent
-            pathname={pathname}
-            onNavigate={close}
-            user={user}
-            onLogout={logout}
-            loggingOut={loggingOut}
-          />
-        </aside>
+        {/* ── Main content ── */}
+        <main className="main">
+          <div className="content">{children}</div>
+        </main>
 
-        <main className="main">{children}</main>
+        {/* ── Mobile bottom tab ── */}
+        <BottomTab pathname={pathname} />
+
+        {/* ── Mobile FAB ── */}
+        {pathname !== "/journal" && (
+          <Link href="/journal?new=1" className="fab" aria-label="New entry">
+            <IconPlus size={24} />
+          </Link>
+        )}
       </div>
     </ToastProvider>
   );
 }
 
-export { useToast };
+export { useToast } from "./toast";
