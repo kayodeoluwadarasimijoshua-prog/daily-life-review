@@ -6,7 +6,8 @@ export const dynamic = "force-dynamic";
 export async function GET(req) {
   const supabase = createClient();
 
-  const origin = req.nextUrl.origin;
+  // Always use production URL for OAuth redirect — never localhost
+  const origin = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",

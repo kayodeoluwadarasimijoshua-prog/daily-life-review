@@ -8,6 +8,9 @@ export async function GET(req) {
   const { searchParams, origin } = new URL(req.url);
   const code = searchParams.get("code");
 
+  // Always redirect to production URL
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || origin;
+
   if (code) {
     const supabase = createClient();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
@@ -27,5 +30,5 @@ export async function GET(req) {
   }
 
   // Redirect to the app — user is now authenticated via Supabase cookies
-  return NextResponse.redirect(`${origin}/`);
+  return NextResponse.redirect(`${siteUrl}/`);
 }
