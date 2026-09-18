@@ -95,16 +95,20 @@ export default function SettingsPage() {
         <div className="card card-pad">
           <h3 className="card-title flex gap8 mb16"><IconSparkle size={18} style={{ color: "var(--brand)" }} /> AI analysis engine</h3>
           <p className="card-sub" style={{ lineHeight: 1.6 }}>
-            Weekly reviews are produced by an on-device lexical engine (sentiment, theme & pattern analysis) — no account or API key needed, and your notes never leave the app.
+            {sys?.provider && sys.provider !== "local"
+              ? "Weekly reviews are written by a large language model. Your entries for the week are sent to the AI provider to generate the review, then the result is stored in your account."
+              : "Weekly reviews are produced by an on-device lexical engine (sentiment, theme & pattern analysis) — no account or API key needed, and your notes never leave the app."}
           </p>
           <div className="mt16" style={{ background: "var(--surface-2)", borderRadius: 11, padding: "10px 14px", display: "flex", alignItems: "center", gap: 10 }}>
-            <IconShield size={18} style={{ color: "var(--good)" }} />
+            <IconShield size={18} style={{ color: sys?.provider && sys.provider !== "local" ? "var(--brand)" : "var(--good)" }} />
             <span style={{ fontSize: 13.5, fontWeight: 600, color: "var(--ink-2)" }}>
-              Active: {sys?.provider === "local" ? "Local engine (offline)" : "Connected provider"}
+              Active: {sys?.providerStatus || "Local engine (offline)"}
             </span>
           </div>
           <p className="muted mt8" style={{ fontSize: 12.5, lineHeight: 1.5 }}>
-            The engine is swappable: set an <code>AI_PROVIDER</code> env var to connect a real LLM later without changing the app.
+            {sys?.provider && sys.provider !== "local"
+              ? "If the AI provider is unreachable, out of credits, or returns an unusable response, the app automatically falls back to the offline engine so your review always generates."
+              : <>The engine is swappable: set an <code>OPENROUTER_API_KEY</code> env var to connect a real LLM without changing the app.</>}
           </p>
         </div>
 
