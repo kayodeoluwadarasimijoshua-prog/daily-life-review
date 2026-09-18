@@ -77,7 +77,19 @@ export async function POST(req) {
       // but NO session — the account is unusable until the link is clicked.
       // Tell the client so it can show a "check your inbox" screen instead of
       // redirecting to a dashboard the user will be bounced out of.
-      const needsConfirmation = !data.session;
+      let needsConfirmation = !data.session;
+
+      // With confirmation DISABLED, Supabase normally returns a session right
+      // away. Some flows still don't, even though the account is immediately
+      // usable — so sign in once to establish the cookie rather than showing
+      // an inbox screen for an email that will never arrive.
+      if (needsConfirmation && supaUser.email_confirmed_at) {
+        const { error: signInErr } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (!signInErr) needsConfirmation = false;
+      }
 
       return NextResponse.json(
         { user: publicUser(appUser), needsConfirmation, email: supaUser.email },
