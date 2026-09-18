@@ -219,7 +219,7 @@ export default function ReminderCard() {
           <span
             style={{
               display: "block", width: 24, height: 24, borderRadius: "50%",
-              background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,.25)",
+              background: "var(--surface)", boxShadow: "0 1px 3px rgba(0,0,0,.35)",
               transform: enabled ? "translateX(22px)" : "translateX(0)",
               transition: "transform .18s",
             }}

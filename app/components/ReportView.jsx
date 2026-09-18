@@ -15,10 +15,12 @@ const DAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"];
 
 function scoreColor(score) {
   const nearest = [5, 4, 3, 2, 1].sort((a, b) => Math.abs(a - score) - Math.abs(b - score))[0];
+  // Tokens so the chart brightens appropriately in dark mode.
   const map = {
-    5: "#0aa66a", 4: "#12b76a", 3: "#5c8df5", 2: "#f0a832", 1: "#ea5455",
+    5: "var(--chart-5)", 4: "var(--chart-4)", 3: "var(--chart-3)",
+    2: "var(--chart-2)", 1: "var(--chart-1)",
   };
-  return map[nearest] || "#cfd4e6";
+  return map[nearest] || "var(--surface-3)";
 }
 
 // ------- compact summary card (used in list / dashboard preview) -------
@@ -60,7 +62,7 @@ function MoodTrendChart({ trend }) {
           {days.map((d, i) => {
             const filled = d.score != null && d.score !== undefined;
             const pct = filled ? Math.max(12, (d.score / 5) * 100) : 0;
-            const color = filled ? scoreColor(d.score) : "#edeff6";
+            const color = filled ? scoreColor(d.score) : "var(--surface-3)";
             const m = MOOD_BY_VALUE[d.mood];
             return (
               <div className="col" key={d.date}>

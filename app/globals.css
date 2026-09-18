@@ -33,6 +33,91 @@
   --radius: 16px;
   --radius-lg: 22px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* tokens that differ between themes */
+  --on-brand: #ffffff;          /* text on brand/gradient fills */
+  --scroll-thumb: #d1d5e0;
+  --btn-soft-hover: #e6e1fd;
+  --hero-call-bg: linear-gradient(120deg, #f3efff, #eef4ff);
+  --hero-call-line: #e2defc;
+  --toast-bg: var(--ink);
+  --toast-fg: #ffffff;
+  --toast-ok: #14532d;
+  --toast-err: #7f1d1d;
+  --toast-info: #1e3a5f;
+  --danger-line: #fecaca;
+
+  /* mood chips */
+  --m-good-fg: #16a34a;  --m-good-bg: var(--good-soft);
+  --m-great-fg: #15803d; --m-great-bg: #dcfce7;
+  --m-okay-fg: #3b82f6;  --m-okay-bg: #eff6ff;
+  --m-low-fg: #d97706;   --m-low-bg: var(--warn-soft);
+  --m-rough-fg: #dc2626; --m-rough-bg: var(--bad-soft);
+
+  /* mood chart bars */
+  --chart-5: #0aa66a; --chart-4: #12b76a; --chart-3: #5c8df5;
+  --chart-2: #f0a832; --chart-1: #ea5455;
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   Dark theme
+   Applied when <html data-theme="dark">. The ThemeScript in
+   layout.jsx sets this before first paint to avoid a flash.
+   ============================================================ */
+:root[data-theme="dark"] {
+  --bg: #0f1117;
+  --surface: #171a23;
+  --surface-2: #1e222d;
+  --surface-3: #272c39;
+  --ink: #eef0f6;
+  --ink-2: #b4b9c9;
+  --ink-3: #848b9e;
+  --ink-4: #5d6478;
+  --line: #272c39;
+
+  --brand: #8b7bf0;
+  --brand-600: #9d90f5;
+  --brand-2: #a596f7;
+  --brand-soft: #23213a;
+
+  --good: #34d399;
+  --good-soft: #10281f;
+  --warn: #fbbf24;
+  --warn-soft: #2a2011;
+  --bad: #f87171;
+  --bad-soft: #2b1618;
+
+  --ring: 0 0 0 3px rgba(139, 123, 240, 0.28);
+  /* Shadows read as depth against dark surfaces only when much stronger */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.5);
+  --shadow-lg: 0 14px 38px rgba(0,0,0,0.6);
+
+  --on-brand: #ffffff;
+  --scroll-thumb: #39404f;
+  --btn-soft-hover: #2c2947;
+  --hero-call-bg: linear-gradient(120deg, #201d33, #171d2e);
+  --hero-call-line: #302c4d;
+  --toast-bg: #272c39;
+  --toast-fg: #eef0f6;
+  --toast-ok: #124a2e;
+  --toast-err: #5c1d1d;
+  --toast-info: #1b3050;
+  --danger-line: #5c2626;
+
+  --m-good-fg: #4ade80;  --m-good-bg: #12291d;
+  --m-great-fg: #86efac; --m-great-bg: #14331f;
+  --m-okay-fg: #7dd3fc;  --m-okay-bg: #11263a;
+  --m-low-fg: #fcd34d;   --m-low-bg: #2e2412;
+  --m-rough-fg: #fca5a5; --m-rough-bg: #2f1a1a;
+
+  --chart-5: #34d399; --chart-4: #4ade80; --chart-3: #7dd3fc;
+  --chart-2: #fbbf24; --chart-1: #f87171;
+
+  color-scheme: dark;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -57,9 +142,9 @@ img, svg { display: block; }
 :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 
-* { scrollbar-width: thin; scrollbar-color: #d1d5e0 transparent; }
+* { scrollbar-width: thin; scrollbar-color: var(--scroll-thumb) transparent; }
 *::-webkit-scrollbar { width: 6px; height: 6px; }
-*::-webkit-scrollbar-thumb { background: #d1d5e0; border-radius: 999px; }
+*::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 999px; }
 
 body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 
@@ -108,7 +193,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .userchip { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 12px; }
 .avatar {
   width: 36px; height: 36px; border-radius: 10px; flex: 0 0 36px;
-  display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 14px;
+  display: grid; place-items: center; color: var(--on-brand); font-weight: 700; font-size: 14px;
   background: var(--grad);
 }
 .userchip .nm { font-size: 13px; font-weight: 700; line-height: 1.2; }
@@ -142,7 +227,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .topbar-avatar {
   width: 34px; height: 34px; border-radius: 10px;
   display: grid; place-items: center;
-  background: var(--grad); color: #fff; font-weight: 700; font-size: 13px;
+  background: var(--grad); color: var(--on-brand); font-weight: 700; font-size: 13px;
 }
 
 /* ============================================================
@@ -179,7 +264,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
   position: fixed; z-index: 25;
   bottom: 80px; right: 20px;
   width: 56px; height: 56px; border-radius: 16px;
-  background: var(--grad); color: #fff;
+  background: var(--grad); color: var(--on-brand);
   box-shadow: 0 6px 20px rgba(108, 92, 231, 0.35);
   display: none; place-items: center;
   transition: transform 0.15s, box-shadow 0.15s;
@@ -214,14 +299,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .btn svg { flex: 0 0 auto; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
 .btn:active:not(:disabled) { transform: scale(0.97); }
-.btn-primary { background: var(--brand); color: #fff; box-shadow: var(--shadow-sm); }
+.btn-primary { background: var(--brand); color: var(--on-brand); box-shadow: var(--shadow-sm); }
 .btn-primary:hover:not(:disabled) { background: var(--brand-600); box-shadow: var(--shadow-md); }
 .btn-ghost { background: var(--surface); color: var(--ink-2); border-color: var(--line); }
 .btn-ghost:hover:not(:disabled) { background: var(--surface-2); color: var(--ink); }
-.btn-danger-ghost { background: var(--surface); color: var(--bad); border-color: #fecaca; }
+.btn-danger-ghost { background: var(--surface); color: var(--bad); border-color: var(--danger-line); }
 .btn-danger-ghost:hover:not(:disabled) { background: var(--bad-soft); }
 .btn-soft { background: var(--brand-soft); color: var(--brand-600); }
-.btn-soft:hover:not(:disabled) { background: #e6e1fd; }
+.btn-soft:hover:not(:disabled) { background: var(--btn-soft-hover); }
 .btn-sm { padding: 7px 14px; font-size: 13px; border-radius: 10px; }
 .btn-lg { padding: 14px 24px; font-size: 15px; border-radius: 14px; }
 .btn-block { width: 100%; }
@@ -249,11 +334,11 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 /* ============================================================
    Mood Colors
    ============================================================ */
-.m-good { color: #16a34a; background: var(--good-soft); }
-.m-great { color: #15803d; background: #dcfce7; }
-.m-okay { color: #3b82f6; background: #eff6ff; }
-.m-low { color: #d97706; background: var(--warn-soft); }
-.m-rough { color: #dc2626; background: var(--bad-soft); }
+.m-good { color: var(--m-good-fg); background: var(--m-good-bg); }
+.m-great { color: var(--m-great-fg); background: var(--m-great-bg); }
+.m-okay { color: var(--m-okay-fg); background: var(--m-okay-bg); }
+.m-low { color: var(--m-low-fg); background: var(--m-low-bg); }
+.m-rough { color: var(--m-rough-fg); background: var(--m-rough-bg); }
 
 /* ============================================================
    Utilities
@@ -350,14 +435,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
   max-width: min(92vw, 360px); pointer-events: none;
 }
 .toast {
-  background: var(--ink); color: #fff; padding: 14px 16px; border-radius: 16px;
+  background: var(--toast-bg); color: var(--toast-fg); padding: 14px 16px; border-radius: 16px;
   font-size: 14px; font-weight: 500; box-shadow: var(--shadow-lg);
   display: flex; gap: 10px; align-items: flex-start; line-height: 1.4;
   animation: toastin 0.2s var(--ease); pointer-events: auto;
 }
-.toast.ok { background: #14532d; }
-.toast.err { background: #7f1d1d; }
-.toast.info { background: #1e3a5f; }
+.toast.ok { background: var(--toast-ok); }
+.toast.err { background: var(--toast-err); }
+.toast.info { background: var(--toast-info); }
 @keyframes toastin { from { opacity: 0; transform: translateY(12px) scale(0.95); } to { opacity: 1; transform: none; } }
 
 /* ============================================================
@@ -399,7 +484,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
    ============================================================ */
 .auth-wrap { min-height: 100vh; min-height: 100dvh; display: flex; }
 .auth-visual {
-  flex: 1.05; background: var(--grad); color: #fff; padding: 60px 56px;
+  flex: 1.05; background: var(--grad); color: var(--on-brand); padding: 60px 56px;
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; justify-content: space-between;
 }
@@ -434,14 +519,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 /* ============================================================
    Logo
    ============================================================ */
-.logo-mark { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--grad); color: #fff; box-shadow: var(--shadow-sm); flex: 0 0 auto; }
+.logo-mark { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--grad); color: var(--on-brand); box-shadow: var(--shadow-sm); flex: 0 0 auto; }
 .logo-mark.sm { width: 30px; height: 30px; border-radius: 9px; }
 
 /* ============================================================
    Report / Insights
    ============================================================ */
 .report-hero {
-  border-radius: var(--radius-lg); padding: 24px; color: #fff;
+  border-radius: var(--radius-lg); padding: 24px; color: var(--on-brand);
   background: var(--grad); position: relative; overflow: hidden;
 }
 .report-hero::after { content:""; position:absolute; width:280px; height:280px; border-radius:50%; background:rgba(255,255,255,0.08); top:-100px; right:-80px; }
@@ -504,7 +589,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
 .hero-call {
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
   padding: 20px; border-radius: var(--radius-lg);
-  background: linear-gradient(120deg, #f3efff, #eef4ff); border: 1px solid #e2defc;
+  background: var(--hero-call-bg); border: 1px solid var(--hero-call-line);
   flex-wrap: wrap;
 }
 

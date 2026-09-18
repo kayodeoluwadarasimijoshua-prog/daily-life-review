@@ -117,7 +117,7 @@ export function moodDot(value, size = 11) {
         width: size,
         height: size,
         borderRadius: "50%",
-        background: m ? m.color : "#cfd4e6",
+        background: m ? m.color : "var(--surface-3)",
         display: "inline-block",
         flex: "0 0 auto",
       }}

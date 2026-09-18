@@ -7,6 +7,7 @@ import {
 } from "../../components/icons";
 import { api, prettyDate } from "../../lib/client";
 import ReminderCard from "../../components/ReminderCard";
+import ThemeCard from "../../components/ThemeCard";
 
 export default function SettingsPage() {
   const [data, setData] = useState(null);
@@ -91,6 +92,9 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
+
+        {/* Appearance */}
+        <ThemeCard />
 
         {/* Daily reminder */}
         <ReminderCard />

@@ -154,7 +154,7 @@ export default function HomePage() {
               style={{
                 width: 40, height: 40, borderRadius: 12, flex: "0 0 auto",
                 display: "grid", placeItems: "center",
-                background: "#fff", color: "var(--brand)",
+                background: "var(--surface)", color: "var(--brand)",
               }}
             >
               <IconClock size={20} />

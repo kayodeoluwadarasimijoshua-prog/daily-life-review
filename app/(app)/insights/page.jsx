@@ -153,7 +153,7 @@ export default function InsightsPage() {
       </div>
 
       {/* generate panel for current week */}
-      <div className="card card-pad mb24" style={{ borderColor: currentWeekReport ? "var(--line)" : "#e4defd", background: "linear-gradient(120deg,#fbfaff,#f5f3ff)" }}>
+      <div className="card card-pad mb24" style={{ borderColor: currentWeekReport ? "var(--line)" : "var(--hero-call-line)", background: "var(--hero-call-bg)" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <div>
             <h3 className="card-title flex gap8"><IconSparkle size={18} style={{ color: "var(--brand)" }} /> {formatWeekRange(ws)}</h3>

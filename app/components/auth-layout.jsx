@@ -5,7 +5,7 @@ export function AuthVisual() {
   return (
     <div className="auth-visual">
       <div>
-        <span className="auth-brand" style={{ color: "#fff" }}>
+        <span className="auth-brand" style={{ color: "var(--on-brand)" }}>
           <span style={{ background: "rgba(255,255,255,0.2)", width: 38, height: 38, borderRadius: 12, display: "grid", placeItems: "center" }}>
             <FeatherMark size={21} />
           </span>
