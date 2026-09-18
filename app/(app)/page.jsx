@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEntries } from "../components/useEntries";
 import { ReportCard } from "../components/ReportView";
 import { SkeletonRows, StatSkeleton, MoodChip, moodDot } from "../components/ui";
-import { IconPlus, IconArrowR, IconJournal, IconSparkle, IconCalendar, IconPen } from "../components/icons";
+import { IconPlus, IconArrowR, IconJournal, IconSparkle, IconCalendar, IconPen, IconClock } from "../components/icons";
 import { api, greeting, prettyDate } from "../lib/client";
 import { scoreForMood, MOOD_BY_VALUE } from "@/lib/moods";
 import {
@@ -52,6 +52,15 @@ export default function HomePage() {
   const { entries, loading } = useEntries();
   const [reports, setReports] = useState([]);
   const [repLoading, setRepLoading] = useState(true);
+  const [reminder, setReminder] = useState(null);
+  useEffect(() => {
+    let on = true;
+    api("/api/reminders")
+      .then((d) => { if (on) setReminder(d.reminder); })
+      .catch(() => {});
+    return () => { on = false; };
+  }, []);
+
   // Resolved on the client so the greeting follows the viewer's own clock,
   // not the server's (Vercel runs in UTC). Re-checks so it flips if the
   // page is left open across a boundary (e.g. 4:59pm -> 5:00pm).
@@ -89,6 +98,15 @@ export default function HomePage() {
   const info = currentWeekInfo(entries);
   const latestReport = reports[0] || null;
   const todayEntries = info.byDate[toISODate()] || [];
+
+  // Show the nudge only once the user's chosen time has passed today.
+  const showNudge = (() => {
+    if (!reminder?.enabled || hour === null) return false;
+    if (todayEntries.length > 0) return false;
+    const [h, m] = String(reminder.time || "21:00").split(":").map(Number);
+    const now = new Date();
+    return hour > h || (hour === h && now.getMinutes() >= m);
+  })();
   const currentWeekReport = reports.find((r) => r.weekStart === info.ws) || null;
   const allTime = entries.length;
 
@@ -126,6 +144,35 @@ export default function HomePage() {
           <IconPlus size={17} /> New entry
         </Link>
       </div>
+
+      {/* in-app nudge: reminder is on, target time passed, nothing written yet */}
+      {showNudge && (
+        <div className="hero-call mb24">
+          <div className="flex gap12" style={{ minWidth: 0 }}>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 40, height: 40, borderRadius: 12, flex: "0 0 auto",
+                display: "grid", placeItems: "center",
+                background: "#fff", color: "var(--brand)",
+              }}
+            >
+              <IconClock size={20} />
+            </span>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontWeight: 700, fontSize: 14.5 }}>
+                You haven’t written today
+              </div>
+              <div className="muted" style={{ fontSize: 13, lineHeight: 1.5 }}>
+                Even two lines is enough to keep the thread going.
+              </div>
+            </div>
+          </div>
+          <Link className="btn btn-primary btn-sm" href="/journal?new=1">
+            <IconPen size={15} /> Write now
+          </Link>
+        </div>
+      )}
 
       {/* stat tiles — responsive auto-fit grid */}
       <div className="grid mb24" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>

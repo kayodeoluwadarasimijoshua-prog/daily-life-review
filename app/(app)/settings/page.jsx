@@ -6,6 +6,7 @@ import {
   IconSettings, IconShield, IconSparkle, IconJournal, IconLogout, IconHeart,
 } from "../../components/icons";
 import { api, prettyDate } from "../../lib/client";
+import ReminderCard from "../../components/ReminderCard";
 
 export default function SettingsPage() {
   const [data, setData] = useState(null);
@@ -90,6 +91,9 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
+
+        {/* Daily reminder */}
+        <ReminderCard />
 
         {/* AI engine */}
         <div className="card card-pad">
