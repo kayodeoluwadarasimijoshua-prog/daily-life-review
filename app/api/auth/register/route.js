@@ -40,6 +40,13 @@ export async function POST(req) {
         if (low.includes("already") || low.includes("registered")) {
           msg = "An account with that email already exists. Try logging in.";
           status = 409;
+        } else if (low.includes("sending confirmation email") || low.includes("error sending")) {
+          // Supabase reached the SMTP provider but the provider refused the
+          // message — almost always an unverified sender or bad credentials.
+          msg =
+            "We couldn't send the confirmation email just now. Please try " +
+            "again in a moment, or use \"Continue with Google\" to get in right away.";
+          status = 502;
         } else if (low.includes("not authorized")) {
           // Supabase's built-in mailer only delivers to project team members
           // until custom SMTP is configured.
