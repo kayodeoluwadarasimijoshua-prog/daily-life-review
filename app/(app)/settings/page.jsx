@@ -8,6 +8,7 @@ import {
 import { api, prettyDate } from "../../lib/client";
 import ReminderCard from "../../components/ReminderCard";
 import ThemeCard from "../../components/ThemeCard";
+import FeedbackCard from "../../components/FeedbackCard";
 
 export default function SettingsPage() {
   const [data, setData] = useState(null);
@@ -119,6 +120,9 @@ export default function SettingsPage() {
               : <>The engine is swappable: set an <code>OPENROUTER_API_KEY</code> env var to connect a real LLM without changing the app.</>}
           </p>
         </div>
+
+        {/* Feedback */}
+        <FeedbackCard />
 
         {/* Data summary */}
         <div className="card card-pad">
