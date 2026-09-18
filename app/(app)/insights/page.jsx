@@ -124,6 +124,9 @@ export default function InsightsPage() {
             {selMood && <span className="badge-soft">Average mood · {selP.moodTrend?.dominant}</span>}
             <span className="badge-soft">{selStats.totalEntries} entries · {selStats.journaledDays} days</span>
             <span className="badge-soft">Generated {new Date(selected.createdAt || selP.meta?.generatedAt).toLocaleDateString()}</span>
+            <span className="badge-soft" title={selP.meta?.model || "Offline lexical engine"}>
+              {selP.meta?.engine === "openrouter" ? "✨ AI written" : "Offline engine"}
+            </span>
           </div>
         </div>
 
