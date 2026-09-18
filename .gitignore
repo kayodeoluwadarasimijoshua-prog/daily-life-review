@@ -11,3 +11,6 @@ npm-debug.log*
 data/
 .vercel
 .env*
+
+# local admin token (never commit)
+ADMIN_TOKEN.txt
