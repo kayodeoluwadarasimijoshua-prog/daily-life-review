@@ -40,6 +40,13 @@ export async function POST(req) {
         if (low.includes("already") || low.includes("registered")) {
           msg = "An account with that email already exists. Try logging in.";
           status = 409;
+        } else if (low.includes("not authorized")) {
+          // Supabase's built-in mailer only delivers to project team members
+          // until custom SMTP is configured.
+          msg =
+            "Sign-ups by email aren't enabled yet on this server. Please use " +
+            "\"Continue with Google\" for now.";
+          status = 503;
         } else if (low.includes("invalid")) {
           // Supabase rejects addresses it can't deliver to (e.g. example.com,
           // plus-addressing on some providers). Say so in plain language.
