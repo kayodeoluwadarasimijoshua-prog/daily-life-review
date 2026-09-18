@@ -11,10 +11,15 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 /**
- * Sends the daily nudge to everyone whose chosen local time has just passed.
+ * Sends the daily nudge to everyone whose chosen local time has already
+ * passed today and who hasn't journaled yet.
  *
- * Invoked by Vercel Cron (hourly). Protected by CRON_SECRET: Vercel sends it
- * as `Authorization: Bearer <secret>`.
+ * Invoked by Vercel Cron. NOTE: the Hobby (free) plan permits only ONE cron
+ * run per day, so this fires once at 19:00 UTC rather than hourly. Users
+ * whose chosen time falls before that get the push at the cron time instead
+ * of exactly their chosen minute; the in-app nudge is always precise.
+ *
+ * Protected by CRON_SECRET, which Vercel sends as `Authorization: Bearer …`.
  */
 async function handler(req) {
   const secret = process.env.CRON_SECRET;
