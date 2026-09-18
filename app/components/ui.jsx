@@ -100,7 +100,7 @@ export function MoodPicker({ value, onChange, disabled }) {
             onClick={() => onChange(on ? null : m.value)}
           >
             <span className="emo">{m.emoji}</span>
-            {m.label}
+            <span className="lbl">{m.label}</span>
           </button>
         );
       })}

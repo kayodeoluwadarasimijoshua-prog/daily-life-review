@@ -292,18 +292,32 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
   border-radius: 999px; font-size: 12.5px; font-weight: 600;
   -webkit-tap-highlight-color: transparent; transition: all 0.15s;
 }
-.mood-picker { display: flex; gap: 8px; flex-wrap: wrap; }
+/* 5 equal columns — always fits, never overflows */
+.mood-picker {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
 .mood-opt {
-  border: 1.5px solid var(--line); background: var(--surface); padding: 10px 16px;
-  border-radius: 12px; display: flex; align-items: center; gap: 8px;
-  font-weight: 600; font-size: 14px; color: var(--ink-2);
+  border: 1.5px solid var(--line); background: var(--surface);
+  padding: 10px 6px;
+  border-radius: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+  font-weight: 600; font-size: 12.5px; color: var(--ink-2);
   transition: all 0.15s; -webkit-tap-highlight-color: transparent;
-  flex: 1; min-width: 0; justify-content: center;
+  min-width: 0; width: 100%;
+  line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .mood-opt:hover { border-color: var(--ink-4); }
 .mood-opt:active { transform: scale(0.96); }
-.mood-opt.on { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-600); }
-.mood-opt .emo { font-size: 18px; }
+.mood-opt.on {
+  border-color: var(--brand); background: var(--brand-soft); color: var(--brand-600);
+  box-shadow: 0 0 0 1px var(--brand) inset;
+}
+.mood-opt .emo { font-size: 20px; line-height: 1; }
+.mood-opt .lbl { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
 /* ============================================================
    Empty States
@@ -577,12 +591,16 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
   .entry h4 { font-size: 15px; }
   .entry .bd { font-size: 14px; line-height: 1.65; }
 
-  /* Mood picker — bigger pills */
+  /* Mood picker — stays 5-across, sized to fit the screen */
+  .mood-picker { gap: 6px; }
   .mood-opt {
-    padding: 12px 14px; font-size: 14px; min-height: 48px;
-    border-radius: 14px;
+    padding: 10px 2px;
+    font-size: 11px;
+    min-height: 62px;
+    border-radius: 12px;
+    gap: 4px;
   }
-  .mood-opt .emo { font-size: 20px; }
+  .mood-opt .emo { font-size: 21px; }
 
   /* Search — full width, big */
   .searchbox { width: 100% !important; }
@@ -643,7 +661,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; }
   .entry { padding: 14px; }
   .auth-card .card-pad { padding: 24px; }
   .auth-title { font-size: 22px; }
-  .mood-opt { padding: 10px 12px; font-size: 13px; min-height: 44px; }
+  .mood-picker { gap: 5px; }
+  .mood-opt { padding: 9px 1px; font-size: 10px; min-height: 58px; border-radius: 10px; }
+  .mood-opt .emo { font-size: 19px; }
   .fab { bottom: 76px; right: 16px; width: 52px; height: 52px; border-radius: 14px; }
 }
 
