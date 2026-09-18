@@ -37,13 +37,25 @@ export async function api(path, options = {}) {
   return data || {};
 }
 
-export function greeting() {
-  const h = new Date().getHours();
-  if (h < 5) return "Burning the midnight oil";
-  if (h < 12) return "Good morning";
-  if (h < 17) return "Good afternoon";
-  if (h < 22) return "Good evening";
-  return "Winding down";
+// Time-of-day greeting based on the *viewer's* local clock.
+// Pass an hour to override (used by tests / hydration-safe rendering).
+export function greeting(hour) {
+  const h = typeof hour === "number" ? hour : new Date().getHours();
+  if (h < 5) return "Good night";        // 12am – 4:59am
+  if (h < 12) return "Good morning";     // 5am  – 11:59am
+  if (h < 17) return "Good afternoon";   // 12pm – 4:59pm
+  if (h < 21) return "Good evening";     // 5pm  – 8:59pm
+  return "Good night";                   // 9pm  – 11:59pm
+}
+
+// A short sub-phrase that matches the time of day.
+export function timeOfDay(hour) {
+  const h = typeof hour === "number" ? hour : new Date().getHours();
+  if (h < 5) return "night";
+  if (h < 12) return "morning";
+  if (h < 17) return "afternoon";
+  if (h < 21) return "evening";
+  return "night";
 }
 
 export const MONTHS_SHORT = [

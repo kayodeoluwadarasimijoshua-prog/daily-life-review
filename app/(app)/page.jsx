@@ -52,6 +52,16 @@ export default function HomePage() {
   const { entries, loading } = useEntries();
   const [reports, setReports] = useState([]);
   const [repLoading, setRepLoading] = useState(true);
+  // Resolved on the client so the greeting follows the viewer's own clock,
+  // not the server's (Vercel runs in UTC). Re-checks so it flips if the
+  // page is left open across a boundary (e.g. 4:59pm -> 5:00pm).
+  const [hour, setHour] = useState(null);
+  useEffect(() => {
+    const tick = () => setHour(new Date().getHours());
+    tick();
+    const id = setInterval(tick, 60_000);
+    return () => clearInterval(id);
+  }, []);
   const router = useRouter();
 
   useEffect(() => {
@@ -94,11 +104,22 @@ export default function HomePage() {
       <div className="pagehead">
         <div>
           <div className="eyebrow"><IconSparkle size={14} /> {formatWeekRange(info.ws)}</div>
-          <h1 className="page-title">{greeting()}. ✨</h1>
+          <h1 className="page-title">
+            {hour === null ? "Welcome back" : greeting(hour)}.{" "}
+            {hour !== null && (hour >= 21 || hour < 5) ? "🌙" : "✨"}
+          </h1>
           <p className="page-desc">
             {todayEntries.length > 0
               ? `You've already written ${todayEntries.length > 1 ? todayEntries.length : "a"} note today. ${info.count} ${info.count === 1 ? "entry" : "entries"} so far this week.`
-              : `A fresh day to reflect. You have ${info.count} ${info.count === 1 ? "entry" : "entries"} recorded this week.`}
+              : `${
+                  hour === null
+                    ? "A moment to reflect"
+                    : hour < 12
+                      ? "A fresh day to reflect"
+                      : hour < 17
+                        ? "A good moment to pause and reflect"
+                        : "Time to look back on your day"
+                }. You have ${info.count} ${info.count === 1 ? "entry" : "entries"} recorded this week.`}
           </p>
         </div>
         <Link className="btn btn-primary" href="/journal?new=1">
