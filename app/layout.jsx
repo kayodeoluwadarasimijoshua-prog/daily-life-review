@@ -8,7 +8,14 @@ export const metadata = {
   description:
     "A gentle journaling companion that turns your daily notes into weekly insights — mood trends, themes, wins and gentle suggestions.",
   manifest: "/manifest.json",
-  icons: { icon: "/favicon.ico" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport = {
