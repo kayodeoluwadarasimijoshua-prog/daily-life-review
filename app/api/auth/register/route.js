@@ -32,10 +32,26 @@ export async function POST(req) {
       });
 
       if (error) {
-        const msg = error.message.includes("already")
-          ? "An account with that email already exists. Try logging in."
-          : error.message;
-        return NextResponse.json({ error: msg }, { status: 409 });
+        const raw = String(error.message || "");
+        const low = raw.toLowerCase();
+        let msg = raw;
+        let status = 400;
+
+        if (low.includes("already") || low.includes("registered")) {
+          msg = "An account with that email already exists. Try logging in.";
+          status = 409;
+        } else if (low.includes("invalid")) {
+          // Supabase rejects addresses it can't deliver to (e.g. example.com,
+          // plus-addressing on some providers). Say so in plain language.
+          msg = "That email address was rejected. Please use a real address you can receive mail at.";
+          status = 400;
+        } else if (low.includes("rate limit")) {
+          msg = "Too many sign-up attempts right now. Please wait a few minutes and try again.";
+          status = 429;
+        } else if (low.includes("password")) {
+          status = 400;
+        }
+        return NextResponse.json({ error: msg }, { status });
       }
 
       const supaUser = data.user;
@@ -43,13 +59,23 @@ export async function POST(req) {
         return NextResponse.json({ error: "Could not create account. Please try again." }, { status: 500 });
       }
 
-      // Sync to Turso
+      // Sync to Turso so the account exists locally either way.
       const appUser = await findOrCreateUserBySupabase({
         id: supaUser.id,
         email: supaUser.email,
         name,
       });
-      return NextResponse.json({ user: publicUser(appUser) }, { status: 201 });
+
+      // When "Confirm email" is enabled in Supabase, signUp() returns a user
+      // but NO session — the account is unusable until the link is clicked.
+      // Tell the client so it can show a "check your inbox" screen instead of
+      // redirecting to a dashboard the user will be bounced out of.
+      const needsConfirmation = !data.session;
+
+      return NextResponse.json(
+        { user: publicUser(appUser), needsConfirmation, email: supaUser.email },
+        { status: 201 }
+      );
     }
 
     // ── Legacy local signup (no Supabase) ──

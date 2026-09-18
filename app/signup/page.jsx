@@ -15,6 +15,8 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  // Set when Supabase requires the user to click a verification link.
+  const [sentTo, setSentTo] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,10 +31,18 @@ export default function SignupPage() {
     setBusy(true);
     setError(null);
     try {
-      await api("/api/auth/register", {
+      const res = await api("/api/auth/register", {
         method: "POST",
         body: { name, email, password },
       });
+
+      // No session yet — the account needs email verification. Redirecting
+      // now would just bounce the user back to /login with no explanation.
+      if (res?.needsConfirmation) {
+        setSentTo(res.email || email);
+        return;
+      }
+
       router.replace("/");
       router.refresh();
     } catch (err) {
@@ -43,6 +53,44 @@ export default function SignupPage() {
   };
 
   if (checking) return <FullScreen label="Loading…" />;
+
+  // Account created, but Supabase needs the email verified before sign-in.
+  if (sentTo) {
+    return (
+      <div className="auth-wrap">
+        <AuthVisual />
+        <div className="auth-panel">
+          <div className="auth-card">
+            <Logo />
+            <div className="card card-pad mt16" style={{ textAlign: "center" }}>
+              <div
+                aria-hidden="true"
+                style={{
+                  width: 64, height: 64, margin: "4px auto 18px", borderRadius: 18,
+                  display: "grid", placeItems: "center",
+                  background: "var(--brand-soft)", fontSize: 30,
+                }}
+              >
+                ✉️
+              </div>
+              <h2 className="auth-title">Check your inbox</h2>
+              <p className="auth-sub">
+                We sent a verification link to <strong style={{ color: "var(--ink)" }}>{sentTo}</strong>.
+                Click it to activate your account, then sign in.
+              </p>
+              <p className="muted mt16" style={{ fontSize: 13, lineHeight: 1.6 }}>
+                Can’t find it? Check your spam or promotions folder — it can take a
+                minute to arrive.
+              </p>
+              <Link href="/login" className="btn btn-primary btn-block mt24">
+                Go to sign in <IconArrowR size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-wrap">

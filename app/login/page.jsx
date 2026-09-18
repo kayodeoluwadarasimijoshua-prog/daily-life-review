@@ -14,9 +14,22 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [unconfirmed, setUnconfirmed] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [notice, setNotice] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    // Surface messages passed back from the Supabase callback (expired link…).
+    try {
+      const p = new URLSearchParams(window.location.search);
+      const e = p.get("error");
+      if (e) {
+        setError(e);
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+    } catch {}
+
     api("/api/auth/me")
       .then((d) => { if (d.user) router.replace("/"); })
       .catch(() => {})
@@ -33,8 +46,24 @@ export default function LoginPage() {
       router.refresh();
     } catch (err) {
       setError(err.message);
+      // Offer a one-click resend when the account exists but isn't verified.
+      setUnconfirmed(Boolean(err?.data?.needsConfirmation));
     } finally {
       setBusy(false);
+    }
+  };
+
+  const resend = async () => {
+    setResending(true);
+    try {
+      await api("/api/auth/resend", { method: "POST", body: { email } });
+      setError(null);
+      setUnconfirmed(false);
+      setNotice(`Verification email sent to ${email}. Check your inbox.`);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setResending(false);
     }
   };
 
@@ -64,7 +93,7 @@ export default function LoginPage() {
                   className={`input ${error ? "err" : ""}`}
                   type="email"
                   value={email}
-                  onChange={(e) => { setEmail(e.target.value); setError(null); }}
+                  onChange={(e) => { setEmail(e.target.value); setError(null); setUnconfirmed(false); setNotice(null); }}
                   placeholder="you@example.com"
                   required
                   autoComplete="email"
@@ -83,6 +112,25 @@ export default function LoginPage() {
                 />
               </div>
               {error && <p className="err-txt mb16" style={{ marginTop: -4 }}>{error}</p>}
+              {unconfirmed && (
+                <button
+                  type="button"
+                  onClick={resend}
+                  disabled={resending}
+                  className="btn btn-soft btn-block mb16"
+                  style={{ marginTop: -4 }}
+                >
+                  {resending ? "Sending…" : "Resend verification email"}
+                </button>
+              )}
+              {notice && (
+                <p
+                  className="mb16"
+                  style={{ marginTop: -4, fontSize: 13.5, fontWeight: 600, color: "var(--good)" }}
+                >
+                  {notice}
+                </p>
+              )}
               <button type="submit" className="btn btn-primary btn-lg btn-block" disabled={busy}>
                 {busy ? <Spinner size={17} /> : "Log in"}
               </button>

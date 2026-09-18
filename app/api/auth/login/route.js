@@ -22,6 +22,29 @@ export async function POST(req) {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
+        const low = String(error.message || "").toLowerCase();
+
+        // An unconfirmed account is NOT a wrong password — saying so sends
+        // people in circles retyping a password that was always correct.
+        if (low.includes("not confirmed") || low.includes("confirm")) {
+          return NextResponse.json(
+            {
+              error:
+                "Please confirm your email first. Check your inbox for the verification link we sent you.",
+              needsConfirmation: true,
+              email,
+            },
+            { status: 403 }
+          );
+        }
+
+        if (low.includes("rate limit")) {
+          return NextResponse.json(
+            { error: "Too many attempts. Please wait a few minutes and try again." },
+            { status: 429 }
+          );
+        }
+
         // Supabase doesn't have the user — try local password fallback
         // (supports legacy users who signed up before Supabase was added)
         const localUser = await findUserByEmail(email);

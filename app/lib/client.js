@@ -2,9 +2,12 @@
 "use client";
 
 export class ApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, data) {
     super(message);
     this.status = status;
+    // Full response body, so callers can read extra fields such as
+    // `needsConfirmation` rather than string-matching the message.
+    this.data = data || null;
   }
 }
 
@@ -25,7 +28,7 @@ export async function api(path, options = {}) {
 
   if (!res.ok) {
     const msg = (data && data.error) || "Something went wrong. Please try again.";
-    const err = new ApiError(msg, res.status);
+    const err = new ApiError(msg, res.status, data);
     if (res.status === 401 && typeof window !== "undefined") {
       const url = `/login?next=${encodeURIComponent(window.location.pathname)}`;
       if (!window.location.pathname.startsWith("/login")) {
